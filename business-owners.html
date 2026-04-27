@@ -1,0 +1,2952 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כך בניתי לעצמי כוח עזר של סוכנים · חני בוסקילה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans+Hebrew:wght@400;600;700&display=swap');
+
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-light-aaa.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-regular-aaa.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-medium-aaa.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-demibold-aaa.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-bold-aaa.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Almoni Tzar';
+    src: url('fonts/almoni-tzar-ultrabold-aaa.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #fafbfc;
+    --bg-grad: linear-gradient(180deg, #eef1ff 0%, #fafbfc 640px);
+    --panel: #ffffff;
+    --panel-2: #f5f6fa;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text: #0a0a0a;
+    --muted: #6b7280;
+    --accent: #2d42d7;
+    --accent-hover: #4356e3;
+    --accent-soft: #e5e8ff;
+    --success: #16a34a;
+    --success-soft: #dcfce7;
+    --warning: #d97706;
+    --shadow: 0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.04);
+    --shadow-lg: 0 20px 60px rgba(45,66,215,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Almoni Tzar', 'Almoni Tzar AAA', 'Almoni', 'Heebo', -apple-system, 'SF Pro Hebrew', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-grad);
+    color: var(--text);
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    direction: rtl;
+    font-size: 20px;
+  }
+
+  /* Slide deck */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 60px 80px 100px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Silky entrance — titles lead, content follows */
+  .slide .story-title,
+  .slide .slide-title,
+  .slide .intro-headline,
+  .slide .about-name,
+  .slide .demo-title,
+  .slide .final-headline {
+    opacity: 0;
+    transform: translateY(-18px);
+    transition:
+      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .slide.active .story-title,
+  .slide.active .slide-title,
+  .slide.active .intro-headline,
+  .slide.active .about-name,
+  .slide.active .demo-title,
+  .slide.active .final-headline {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide .story-sub,
+  .slide .slide-subtitle,
+  .slide .about-sub,
+  .slide .demo-hint,
+  .slide .uxtra-logo,
+  .slide .logos-image,
+  .slide .filetree,
+  .slide .timeline,
+  .slide .reveal-list,
+  .slide .vs-grid,
+  .slide .chat,
+  .slide .kanban,
+  .slide .card-grid,
+  .slide .demo-badge,
+  .slide .final-cta,
+  .slide .final-thanks,
+  .slide .callout,
+  .slide .flow,
+  .slide .tip-row {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.18s,
+      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
+  }
+
+  .slide.active .story-sub,
+  .slide.active .slide-subtitle,
+  .slide.active .about-sub,
+  .slide.active .demo-hint,
+  .slide.active .uxtra-logo,
+  .slide.active .logos-image,
+  .slide.active .filetree,
+  .slide.active .timeline,
+  .slide.active .reveal-list,
+  .slide.active .vs-grid,
+  .slide.active .chat,
+  .slide.active .kanban,
+  .slide.active .card-grid,
+  .slide.active .demo-badge,
+  .slide.active .final-cta,
+  .slide.active .final-thanks,
+  .slide.active .callout,
+  .slide.active .flow,
+  .slide.active .tip-row {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Slide header */
+  .slide-header {
+    margin-bottom: 32px;
+  }
+
+  .slide-eyebrow {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .slide-title {
+    font-size: 58px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .slide-title-xl {
+    font-size: 76px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .slide-subtitle {
+    font-size: 32px;
+    color: var(--muted);
+    margin-top: 14px;
+    font-weight: 400;
+  }
+
+  /* Body */
+  .slide-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    gap: 20px;
+  }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-accent {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .card-dark {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    border: none;
+  }
+
+  .card-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .card-subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .card-dark .card-subtitle {
+    color: var(--accent-soft);
+  }
+
+  .card-body {
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .card-dark .card-body {
+    color: rgba(255,255,255,0.85);
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  /* File tree */
+  .filetree {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 16px;
+    line-height: 1.8;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    direction: ltr;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .filetree[data-zoomable] {
+    cursor: zoom-in;
+  }
+
+  .filetree[data-zoomable]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .filetree.zoomed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.85);
+    transform-origin: center;
+    z-index: 1000;
+    cursor: zoom-out;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+    animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .filetree.zoomed:hover {
+    transform: translate(-50%, -50%) scale(1.85);
+  }
+
+  @keyframes zoomIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1.85); }
+  }
+
+  .zoom-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999;
+    cursor: zoom-out;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .zoom-overlay[hidden] {
+    display: none !important;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .filetree .dir { color: var(--accent); font-weight: 700; }
+  .filetree .file { color: var(--text); }
+  .filetree .comment { color: var(--muted); font-size: 14px; direction: rtl; display: inline-block; margin-right: 16px; }
+
+  .ftag {
+    display: inline-block;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    background: #fed7aa;
+    color: #c2410c;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-right: 18px;
+    line-height: 1.2;
+    vertical-align: middle;
+    direction: rtl;
+    opacity: 0;
+    transform: translateX(-8px) rotate(-5deg);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    box-shadow: 0 2px 6px rgba(194,65,12,0.12);
+  }
+
+  .ftag.revealed {
+    opacity: 1;
+    transform: translateX(0) rotate(-5deg);
+  }
+
+  /* Bullet list */
+  .bullet-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bullet-list li {
+    font-size: 36px;
+    line-height: 1.5;
+    padding-right: 40px;
+    position: relative;
+    font-weight: 400;
+  }
+
+  .bullet-list li::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 13px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .bullet-list.numbered {
+    counter-reset: item;
+  }
+
+  .bullet-list.numbered li {
+    counter-increment: item;
+    padding-right: 56px;
+  }
+
+  .bullet-list.numbered li::before {
+    content: counter(item);
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    border-radius: 10px;
+  }
+
+  /* Before/after */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .vs-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  .vs-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .vs-card.before { border-color: var(--border); }
+  .vs-card.after { border-color: var(--accent); background: var(--panel); }
+
+  .vs-label {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .after .vs-label { color: var(--accent); }
+
+  .vs-headline {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--text);
+    line-height: 1.05;
+  }
+
+  .vs-detail {
+    font-size: 21px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* Chat bubbles */
+  .chat {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .msg {
+    padding: 18px 22px;
+    border-radius: 16px;
+    font-size: 24px;
+    line-height: 1.5;
+    min-width: 400px;
+    max-width: 100%;
+    font-weight: 400;
+    flex-shrink: 1;
+    text-align: right;
+  }
+
+  .slide-label {
+    font-size: 22px;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: -0.005em;
+    margin-bottom: 0;
+  }
+
+  .msg-user {
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg-claude {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    box-shadow: var(--shadow);
+  }
+
+  .msg-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    max-width: 78%;
+  }
+
+  .msg-row.user {
+    align-self: flex-start;
+  }
+
+  .msg-row.claude {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    margin-top: 4px;
+  }
+
+  .msg-row[data-reveal] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .msg-row[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .msg-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+
+  .task-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .task-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 22px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .task-list li.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .task-list li::before {
+    content: "✓";
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    color: transparent;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
+
+  .task-list li.revealed::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transition-delay: 0.3s;
+    animation: checkBump 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+  }
+
+  @keyframes checkBump {
+    0% { transform: scale(0.55); }
+    55% { transform: scale(1.22); }
+    100% { transform: scale(1); }
+  }
+
+  /* Document skeleton (inside Claude bubble) */
+  .doc-skeleton {
+    background: #f5f6fa;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .skel-line {
+    height: 12px;
+    background: #d1d5db;
+    border-radius: 4px;
+    opacity: 0.65;
+  }
+
+  .skel-line.subject {
+    width: 55%;
+    height: 18px;
+    background: #9ca3af;
+    margin-bottom: 6px;
+    opacity: 0.85;
+  }
+
+  .skel-line.short  { width: 65%; }
+  .skel-line.medium { width: 82%; }
+  .skel-line.long   { width: 100%; }
+
+  /* Mail system window (slide 8) */
+  .mail-window {
+    max-width: 760px;
+    width: 100%;
+    margin: 32px auto 0;
+    background: #fff;
+    border: 2px solid #fdba74;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 14px 40px rgba(194, 65, 12, 0.14);
+    text-align: right;
+  }
+
+  .mail-header {
+    background: #fed7aa;
+    padding: 14px 22px;
+    border-bottom: 1px solid #fdba74;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mail-header .dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .mail-header .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #c2410c;
+    opacity: 0.45;
+  }
+
+  .mail-header .title {
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    color: #c2410c;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .mail-field {
+    padding: 18px 26px;
+    border-bottom: 1px solid #fed7aa;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .mail-field-label {
+    color: #c2410c;
+    font-weight: 700;
+    font-size: 18px;
+    min-width: 80px;
+  }
+
+  .mail-field-value {
+    color: #9a3412;
+    font-size: 20px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .mail-body {
+    padding: 26px;
+    min-height: 220px;
+    background: #fffbf5;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mail-body .line {
+    height: 14px;
+    background: #fed7aa;
+    border-radius: 4px;
+    opacity: 0.7;
+  }
+
+  .mail-actions {
+    padding: 18px 26px;
+    border-top: 1px solid #fed7aa;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mail-send-btn {
+    background: #ea580c;
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+  }
+
+  .mail-disclaimer {
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    color: #c2410c;
+    font-size: 18px;
+    margin-top: 24px;
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  .mail-stage {
+    position: relative;
+    max-width: 760px;
+    width: 100%;
+    margin: 32px auto 0;
+  }
+
+  .paste-tag {
+    position: absolute;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    background: #fed7aa;
+    color: #c2410c;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(194, 65, 12, 0.28);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transform: scale(0.75) rotate(-6deg);
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .paste-tag.revealed,
+  .paste-tag.revealed ~ .paste-tag {
+    opacity: 1;
+    transform: scale(1) rotate(-6deg);
+  }
+
+  .paste-pos-subject {
+    top: 56px;
+    left: -40px;
+  }
+
+  .paste-pos-body {
+    top: 200px;
+    left: -40px;
+  }
+
+  /* Folder selector (Claude Code style) */
+  .folder-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fed7aa;
+    border: 1.5px solid #fdba74;
+    color: #c2410c;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    align-self: flex-end;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(194, 65, 12, 0.15);
+    direction: ltr;
+  }
+
+  .folder-selector .folder-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .folder-selector .folder-chevron {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-left: 2px;
+  }
+
+  /* Genius arc text (slide 4) */
+  .genius-arc {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 180px;
+    z-index: 5;
+    overflow: visible;
+  }
+
+  .genius-arc-text {
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    font-size: 45px;
+    fill: #1a1a1a;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .genius-arc[data-reveal] {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px) scale(0.92);
+    transition:
+      opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .genius-arc[data-reveal].revealed {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  /* Laundry row layout (slide 3 - "חני, אני קלטתי אותך") */
+  .laundry-arc-title {
+    display: block;
+    margin: 0 auto;
+    width: 760px;
+    height: 200px;
+    overflow: visible;
+  }
+
+  .laundry-arc-text {
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    font-size: 45px;
+    fill: #1a1a1a;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .laundry-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .laundry-row-img {
+    width: 240px;
+    height: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  .bump-img {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  .laundry-arrow-step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .laundry-arrow-step[data-reveal] {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .laundry-arrow-step[data-reveal].revealed {
+    opacity: 1;
+  }
+
+  .laundry-arrow-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .laundry-line-straight {
+    stroke: #1a1a1a;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    fill: none;
+    opacity: 0.85;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 0.55s ease;
+  }
+
+  .laundry-arrow-step.revealed .laundry-line-straight {
+    stroke-dashoffset: 0;
+  }
+
+  .laundry-arrow-tip {
+    stroke: #1a1a1a;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    opacity: 0;
+    transition: opacity 0.2s ease 0.5s;
+  }
+
+  .laundry-arrow-step.revealed .laundry-arrow-tip {
+    opacity: 0.85;
+  }
+
+  .laundry-arrow-step.revealed + .bump-img {
+    opacity: 1;
+    animation: imgBump 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s forwards;
+  }
+
+  .bump-img[data-reveal].revealed {
+    opacity: 1;
+    animation: imgBump 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes imgBump {
+    0% { opacity: 0; transform: scale(0.7); }
+    60% { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Two-column "when to create skill" (slide 9) */
+  .when-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    text-align: center;
+    direction: rtl;
+    margin-top: 24px;
+    justify-items: center;
+  }
+
+  .when-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .when-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .when-header[data-reveal] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .when-header[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .when-tag {
+    background: #fed7aa;
+    color: #c2410c;
+    padding: 8px 22px;
+    border-radius: 999px;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    transform: rotate(-5deg);
+    box-shadow: 0 4px 12px rgba(194,65,12,0.18);
+    margin-bottom: 18px;
+  }
+
+  .when-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-align: center;
+  }
+
+  .when-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 24px 0 20px;
+    width: 100%;
+  }
+
+  .when-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .when-list li {
+    font-size: 36px;
+    line-height: 1.4;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .when-list li[data-reveal] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .when-list li[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Skill folder illustration (slide 12) */
+  .skill-folder {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .skill-folder-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #fed7aa;
+    color: #c2410c;
+    padding: 16px 36px;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'SF Mono', Menlo, monospace;
+    border: 2px solid #fdba74;
+    border-bottom: none;
+    border-radius: 16px 16px 0 0;
+    direction: ltr;
+    margin-bottom: -2px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .skill-folder-tab .tab-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .skill-folder-body {
+    background: #fffbf5;
+    border: 2px solid #fdba74;
+    border-radius: 0 18px 18px 18px;
+    padding: 80px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 14px 40px rgba(194, 65, 12, 0.14);
+  }
+
+  .skill-md-doc {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 56px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .skill-md-icon {
+    font-size: 96px;
+    line-height: 1;
+  }
+
+  .skill-md-name {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  /* Pipeline kanban */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .kcol {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .kcol-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kcol-title {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .kcol-count {
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  .kcol-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 180px;
+  }
+
+  .kcard {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .kcard-date {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .kcard-title {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* Flow */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 26px;
+    font-size: 22px;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .flow-step.accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 300;
+  }
+
+  /* Demo slide */
+  .demo-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .demo-badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .demo-title {
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .demo-hint {
+    font-size: 26px;
+    color: var(--muted);
+    max-width: 780px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  /* Footer bar */
+  .slide-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 52px;
+    background: #0a0a0a;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .slide-footer .brand {
+    font-weight: 800;
+  }
+
+  .slide-footer .page {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.7;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 68px;
+    left: 24px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .nav button {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    color: var(--text);
+  }
+
+  .nav button:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* Callouts */
+  .callout {
+    background: var(--accent-soft);
+    border-right: 4px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 17px;
+    line-height: 1.5;
+    margin-top: 20px;
+  }
+
+  .callout strong { color: var(--accent); }
+
+  .file-chip {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: var(--text);
+    display: inline-block;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tag-skill { background: #e5e8ff; color: var(--accent); }
+  .tag-agent { background: #dcfce7; color: var(--success); }
+  .tag-memory { background: #fef3c7; color: var(--warning); }
+  .tag-claude { background: #f3e8ff; color: #7c3aed; }
+
+  .orange-tag {
+    display: inline-block;
+    background: #fed7aa;
+    color: #c2410c;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(194,65,12,0.13);
+    opacity: 0;
+    transform: translateY(8px) rotate(var(--rot, -5deg));
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .orange-tag.revealed {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot, -5deg));
+  }
+
+  /* Two-column */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .two-col-wide {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  /* Highlight key term */
+  mark {
+    background: linear-gradient(180deg, transparent 60%, var(--accent-soft) 60%);
+    padding: 0 4px;
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  /* Tip row */
+  .tip-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .tip-num {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .tip-content strong {
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .tip-content p {
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  /* Centered final slide */
+  .final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+    gap: 24px;
+  }
+
+  .final-headline {
+    font-size: 66px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    max-width: 1000px;
+  }
+
+  .final-cta {
+    font-size: 26px;
+    color: var(--muted);
+    max-width: 820px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .final-thanks {
+    margin-top: 24px;
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Scrollbar */
+  .slide::-webkit-scrollbar { width: 8px; }
+  .slide::-webkit-scrollbar-track { background: transparent; }
+  .slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* Intro slides (dashboard style) */
+  .slide.intro {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 80px 100px;
+  }
+
+  .intro-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1100px;
+  }
+
+  .uxtra-logo {
+    max-width: 630px;
+    width: 82%;
+    height: auto;
+    display: block;
+    margin: 0 auto 40px;
+  }
+
+  .intro-headline {
+    font-size: 58px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    max-width: 1100px;
+    margin: 56px auto 0;
+    color: var(--text);
+  }
+
+  .intro-headline mark {
+    background: none;
+    color: var(--accent);
+    font-weight: 700;
+    padding: 0;
+  }
+
+  /* About me */
+  .about-name {
+    font-size: 108px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  .about-sub {
+    font-size: 32px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-bottom: 80px;
+  }
+
+  .logos-image {
+    max-width: 1200px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    opacity: 0.85;
+  }
+
+  /* Centered story slide (pain) */
+  .slide.centered {
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding: 140px 80px 100px;
+  }
+
+  .story-wrap {
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .story-title {
+    font-size: 58px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .story-sub {
+    font-size: 32px;
+    color: var(--muted);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 72px;
+    line-height: 1.5;
+  }
+
+  .reveal-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .reveal-list li {
+    font-size: 36px;
+    line-height: 1.4;
+    color: var(--text);
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .reveal-list li.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-list li strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .slide .story-sub[data-reveal],
+  .slide.active .story-sub[data-reveal] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .slide.active .story-sub[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-line {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .reveal-line.revealed {
+    opacity: 1;
+  }
+
+  /* Bridge construction (slide 17 - MCP) */
+  .bridge-svg {
+    position: absolute;
+    top: calc(50% + 150px);
+    left: 0;
+    width: 100%;
+    height: 100px;
+    overflow: visible;
+  }
+
+  /* Steep road below bridge (slide 18 - API) */
+  .road-svg {
+    position: absolute;
+    top: calc(50% + 248px);
+    left: 0;
+    width: 100%;
+    height: 500px;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* MCP logos (slides 17 & 18) */
+  .mcp-logos {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    --logo-top: 118px;
+  }
+
+  .mcp-logos.on-road {
+    --logo-top: 318px;
+  }
+
+  .mcp-logo {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+    opacity: 0;
+  }
+
+  /* Claude: sits to the left of the big title */
+  .mcp-logo-claude {
+    top: calc(50% + var(--logo-top));
+    left: calc(50% - 290px);
+  }
+
+  /* All other logos: rain down, land right of title */
+  .mcp-logo-pile {
+    top: calc(50% + var(--logo-top));
+    left: calc(50% + var(--px));
+    z-index: var(--i);
+  }
+
+  .slide.active .mcp-logo-claude {
+    animation:
+      claudeFall 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0s forwards,
+      logoFloat  3.2s ease-in-out 0.7s infinite;
+  }
+
+  .slide.active .mcp-logo-pile {
+    animation:
+      pileFall  0.65s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 0.1s + 0.1s) forwards,
+      logoFloat 3.2s ease-in-out calc(var(--i) * 0.18s + 0.8s) infinite;
+  }
+
+  @keyframes claudeFall {
+    from { opacity: 0; transform: translateY(-700px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pileFall {
+    from { opacity: 0; transform: translateY(-700px); }
+    to   { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)); }
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0)     rotate(var(--rot, 0deg)); }
+    50%       { transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+  }
+
+  /* Teaser arrow (slide 18) */
+  .tease-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: 56px;
+    color: var(--text);
+    opacity: 0.45;
+    animation: bounceLeft 1.5s ease-in-out infinite;
+  }
+
+  @keyframes bounceLeft {
+    0%, 100% { transform: translateX(-50%); }
+    50%       { transform: translateX(calc(-50% - 20px)); }
+  }
+
+  /* Live demo badge (slide 16) */
+  .live-demo-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 999px;
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.15em;
+  }
+
+  .live-dot {
+    width: 12px;
+    height: 12px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+    animation: livePulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+  }
+
+  /* Skill icons arc (slide 12) */
+  .skill-icons-arc {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 200px;
+    margin-bottom: 30px;
+  }
+
+  .skill-icon {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+
+  .skill-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .slide.active .skill-icon {
+    animation: iconSilk 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .slide.active .skill-icon:nth-child(1) { animation-delay: 0.9s; }
+  .slide.active .skill-icon:nth-child(2) { animation-delay: 0.96s; }
+  .slide.active .skill-icon:nth-child(3) { animation-delay: 1.02s; }
+  .slide.active .skill-icon:nth-child(4) { animation-delay: 1.08s; }
+
+  @keyframes iconSilk {
+    0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1300px;
+    margin: 100px auto 0;
+    padding: 0;
+    direction: rtl;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 117px;
+    right: 10%;
+    left: 10%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .timeline-progress {
+    position: absolute;
+    top: 117px;
+    right: 10%;
+    height: 2px;
+    background: var(--accent);
+    z-index: 0;
+    width: 0;
+    transition: width 0.6s ease;
+  }
+
+  .timeline-step {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0.25;
+    transition: opacity 0.5s ease;
+    padding: 0 10px;
+  }
+
+  .timeline-step.revealed {
+    opacity: 1;
+  }
+
+  .timeline-tag {
+    font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif;
+    background: #fed7aa;
+    color: #c2410c;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 999px;
+    margin-bottom: 40px;
+    letter-spacing: 0;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(6px) rotate(-6deg);
+    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+    box-shadow: 0 2px 6px rgba(194,65,12,0.12);
+  }
+
+  .timeline-step.revealed .timeline-tag {
+    opacity: 1;
+    transform: translateY(0) rotate(-6deg);
+  }
+
+  .timeline-dot {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 24px;
+    transition: all 0.4s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .timeline-step.revealed .timeline-dot {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .timeline-label {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 240px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ============================================== -->
+<!-- SLIDE 1: כותרת ההרצאה -->
+<!-- ============================================== -->
+<section class="slide intro active">
+  <div style="position: absolute; top: 32px; right: 90px; display: flex; align-items: center; gap: 16px; z-index: 10; direction: ltr;">
+    <a href="agent-template.zip" download style="font-size: 20px; color: #000; text-decoration: none; display: inline-flex; align-items: center; gap: 7px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      טמפלט לסוכן הראשון
+    </a>
+  </div>
+  <div class="intro-inner">
+    <img src="uxtra-close.png" alt="UXTRA CLOSE · @hani.buskila" class="uxtra-logo">
+    <h1 class="intro-headline">
+      כך בניתי לעצמי <mark>כוח עזר של סוכנים</mark><br>
+      שמנהל לי את העבודה השחורה בעסק
+    </h1>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">1 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 2: אני חני בוסקילה -->
+<!-- ============================================== -->
+<section class="slide intro">
+  <div class="intro-inner">
+    <h1 class="about-name">אני חני בוסקילה</h1>
+    <p class="about-sub">מעצבת חוויית משתמש · ex מפתחת פרונט אנד</p>
+
+    <img src="logos.png" alt="Adwords · Elementor · esh · DAZN · הטכניון · 6B · pixelperfect" class="logos-image">
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">2 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 3: מי ניסה קלוד קוד? -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center; position: relative;">
+    <div style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 32px;">
+      <img src="claude-logo.svg" style="width: 80px; height: 80px; display: block;">
+    </div>
+    <h1 class="story-title">מי פה ניסה / שמע על קלוד קוד?</h1>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">3 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 4: חני, אני קלטתי אותך (משולש כביסה) -->
+<!-- ============================================== -->
+<section class="slide centered" style="padding: 0 80px 100px; justify-content: flex-start;">
+  <!-- Arc title at top -->
+  <svg class="laundry-arc-title" viewBox="0 0 760 200" preserveAspectRatio="xMidYMid meet" style="margin-top: -20px;">
+    <defs>
+      <path id="laundry-title-path" d="M 50,170 A 350,100 0 0 0 710,170" fill="none"/>
+    </defs>
+    <text class="laundry-arc-text" direction="rtl">
+      <textPath href="#laundry-title-path" startOffset="50%" text-anchor="middle">"חני, אני קלטתי אותך"</textPath>
+    </text>
+  </svg>
+
+  <!-- Centered row container -->
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; width: 100%;">
+    <div class="laundry-row" style="max-width: 1300px;">
+      <img src="laundry-washing.png" alt="כביסה" class="laundry-row-img bump-img" data-reveal>
+
+      <div class="laundry-arrow-step" data-reveal>
+        <svg class="laundry-arrow-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+          <line class="laundry-line-straight" x1="95" y1="15" x2="5" y2="15"/>
+          <path class="laundry-arrow-tip" d="M 18,8 L 5,15 L 18,22"/>
+        </svg>
+      </div>
+      <img src="laundry-folded.png" alt="קיפול" class="laundry-row-img bump-img">
+
+      <div class="laundry-arrow-step" data-reveal>
+        <svg class="laundry-arrow-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+          <line class="laundry-line-straight" x1="95" y1="15" x2="5" y2="15"/>
+          <path class="laundry-arrow-tip" d="M 18,8 L 5,15 L 18,22"/>
+        </svg>
+      </div>
+      <img src="laundry-closet.png" alt="ארון" class="laundry-row-img bump-img">
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">4 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 4: תמונה (אישה רגועה) + "אתה גאון" -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final" style="flex: 1;">
+    <img src="relax.png" alt="רגועה" style="max-height: 70vh; width: auto; display: block;">
+  </div>
+
+  <svg class="genius-arc" data-reveal viewBox="0 0 500 180" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <path id="genius-path" d="M 40,150 A 230,90 0 0 0 460,150" fill="none"/>
+    </defs>
+    <text class="genius-arc-text" direction="rtl">
+      <textPath href="#genius-path" startOffset="50%" text-anchor="middle">"אתה גאון!"</textPath>
+    </text>
+  </svg>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">5 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 5: ציר זמן · האבולוציה -->
+<!-- ============================================== -->
+<section class="slide centered">
+  <div class="story-wrap" style="max-width: 1300px;">
+    <img src="evolution.png" alt="אבולוציה" style="display: block; max-height: 220px; width: auto; margin: 0 auto 20px;">
+    <h1 class="story-title" style="margin-bottom: 0;">האבולוציה של שליטה בעסק</h1>
+
+    <div class="timeline">
+      <div class="timeline-progress" data-progress></div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag">צ׳אט</div>
+        <div class="timeline-dot">1</div>
+        <div class="timeline-label">שיחה</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag">מאגר ידע</div>
+        <div class="timeline-dot">2</div>
+        <div class="timeline-label">מאגר ידע לחזור אליו</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag">סקיל</div>
+        <div class="timeline-dot">3</div>
+        <div class="timeline-label">סט הוראות חוזרות</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag">סוכן</div>
+        <div class="timeline-dot">4</div>
+        <div class="timeline-label">משימה רב שלבית</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag">אוטומציה</div>
+        <div class="timeline-dot">5</div>
+        <div class="timeline-label">עזוב אותי באמש׳ך, תעשה את זה לבד</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">6 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 4: הארכיטקטורה שלי -->
+<!-- ============================================== -->
+<section class="slide centered">
+  <div class="story-wrap" style="max-width: 1000px;">
+    <h1 class="story-title">כל השמות המפחידים האלה הם בסך הכל קבצי טקסט</h1>
+    <p class="story-sub">לא, לא צריך לזכור או לשנן את זה. רק שתדעו מה קורה.</p>
+
+    <div class="filetree" data-zoomable style="max-width: 780px; margin: 0 auto;">
+<span class="dir">hani-vault/</span><span class="ftag" data-reveal>פרויקט</span><br>
+├── <span class="file">CLAUDE.md</span><span class="comment">← הכללים לכל הפרויקט</span><br>
+├── <span class="dir">Core/</span><span class="ftag" data-reveal>מאגר מידע</span><br>
+│&nbsp;&nbsp;&nbsp;└── <span class="file">core-identity.md</span><span class="comment">← מי אני, איך אני כותבת</span><br>
+├── <span class="dir">Agents/</span><span class="ftag" data-reveal>סוכן</span><br>
+│&nbsp;&nbsp;&nbsp;└── <span class="file">uxtra-newsletter-agent.md</span><br>
+├── <span class="dir">Memory/</span><br>
+│&nbsp;&nbsp;&nbsp;└── <span class="file">learning-log.md</span><span class="comment">← מה עבד, מה לא</span><br>
+├── <span class="dir">posts/</span><span class="comment">← חומר גלם</span><br>
+├── <span class="dir">Newsletters/</span><span class="comment">← הפלט</span><br>
+└── <span class="dir">.claude/skills/</span><span class="ftag" data-reveal>סקיל</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">subject-line-generator/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file">SKILL.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">newsletter-draft/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">social-repurpose/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">brand-voice-check/</span><br>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">7 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 5: הכאב שלי (ניוזלטר) -->
+<!-- ============================================== -->
+<section class="slide centered" style="padding: 40px 80px 100px;">
+  <div class="story-wrap">
+    <img src="pain.png" alt="כאב" style="display: block; max-height: 220px; width: auto; margin: 0 auto 16px;">
+    <h1 class="story-title" style="margin-bottom: 48px;">הכאב שלי: כתיבת ניוזלטר</h1>
+
+    <ul class="reveal-list">
+      <li data-reveal>כל שבוע · <strong>שעתיים</strong> על טקסט של 400 מילה</li>
+      <li data-reveal>לפתוח מאפס · לזכור את הטון · לבדוק שלא חוזרת על עצמי</li>
+      <li data-reveal>שורות נושא · <strong>15 דקות</strong> על כל אחת</li>
+      <li data-reveal>הגהה אחרונה · שוב מהתחלה כי זה לא נשמע כמוני</li>
+      <li data-reveal>עייפות מלחזור על עצמי כל שבוע מחדש</li>
+    </ul>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">8 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 7: איך זה קורה? -->
+<!-- ============================================== -->
+<section class="slide centered" style="padding: 40px 80px 100px;">
+  <div class="story-wrap" style="max-width: 1100px;">
+    <div class="chat" style="margin-top: 0;">
+      <div class="folder-selector">
+        <svg class="folder-icon" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 5a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5z"/>
+        </svg>
+        <span>hani-vault</span>
+        <span class="folder-chevron">⌄</span>
+      </div>
+
+      <div class="msg-row user">
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          היי קלודי, יש לי רעיון לניוזלטר
+        </div>
+      </div>
+
+      <div class="msg-row claude" data-reveal>
+        <img src="claude-logo.svg" alt="קלוד" class="avatar">
+        <div class="msg msg-claude">
+          מפעיל את המשימות הבאות:
+          <ul class="task-list">
+            <li data-reveal>קורא סגנון כתיבה</li>
+            <li data-reveal>מסגנן ניוזלטר</li>
+            <li data-reveal>כותב לפי שפת המותג</li>
+            <li data-reveal>מג׳נרט שורת נושא</li>
+            <li data-reveal>מייצר פרומפט לננו בננה</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="msg-row user" data-reveal>
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          כפרעליך נו כבר!
+        </div>
+      </div>
+
+      <div class="msg-row claude" data-reveal>
+        <img src="claude-logo.svg" alt="קלוד" class="avatar">
+        <div class="msg msg-claude">
+          יצרתי את הניוזלטר הבא:
+          <div class="doc-skeleton">
+            <div class="skel-line subject"></div>
+            <div class="skel-line long"></div>
+            <div class="skel-line long"></div>
+            <div class="skel-line medium"></div>
+            <div class="skel-line long"></div>
+            <div class="skel-line short"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">9 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 8: חלון מערכת דיוור (איור) -->
+<!-- ============================================== -->
+<section class="slide centered">
+  <div class="story-wrap" style="max-width: 900px;">
+    <div class="mail-stage">
+      <div class="mail-window">
+        <div class="mail-header">
+          <span class="title">מערכת הדיוור המגניבה שלך</span>
+          <div class="dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+        <div class="mail-field">
+          <span class="mail-field-label">נושא:</span>
+          <span class="mail-field-value">שורת הנושא של הניוזלטר</span>
+        </div>
+
+        <div class="mail-body">
+          <div class="line" style="width: 70%"></div>
+          <div class="line" style="width: 95%"></div>
+          <div class="line" style="width: 88%"></div>
+          <div class="line" style="width: 80%"></div>
+          <div class="line" style="width: 92%"></div>
+          <div class="line" style="width: 65%"></div>
+        </div>
+
+        <div class="mail-actions">
+          <span class="mail-send-btn">שלח</span>
+        </div>
+      </div>
+
+      <span class="paste-tag paste-pos-subject" data-reveal>paste</span>
+      <span class="paste-tag paste-pos-body">paste</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">10 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 9: זה בני גורן לי מידי -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final" style="flex: 1;">
+    <div style="position: relative; display: inline-block; text-align: center;">
+      <img src="bnei-goren.png" alt="בני גורן" style="position: absolute; bottom: calc(100% + 32px); left: 50%; transform: translateX(-50%); max-height: 234px; width: auto;">
+      <p style="font-family: 'Playpen Sans Hebrew', 'Almoni Tzar', sans-serif; font-size: 40px; color: #c2410c; margin: 0 0 14px 0; font-weight: 600;">רגע, רגע, רגע</p>
+      <h1 class="final-headline" style="margin: 0; font-size: 96px; line-height: 1.05;">זה בני גורן לי מידי</h1>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">11 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 11: ל-AI אין באמת זיכרון -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center;">
+    <h1 class="story-title" style="font-size: 88px; line-height: 1.1;">ל-AI אין באמת זיכרון</h1>
+    <p class="story-sub" data-reveal style="margin-bottom: 0; margin-top: 32px; font-size: 40px;">אבל הוא יודע לקרוא קבצים</p>
+    <div style="display: flex; gap: 24px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+      <span class="orange-tag" data-reveal style="--rot: -6deg;">מאגר מידע</span>
+      <span class="orange-tag" data-reveal style="--rot: 4deg;">סטים של פעולות חוזרות</span>
+      <span class="orange-tag" data-reveal style="--rot: -3deg;">למידה</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">12 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 12: סקיל = סט הוראות חוזרות -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center; position: relative;">
+    <!-- Icons arc above title (auto-animate sequentially) -->
+    <div class="skill-icons-arc">
+      <span class="skill-icon" style="bottom: 0; right: 20px;"><img src="icon-group.svg" alt=""></span>
+      <span class="skill-icon" style="bottom: 80px; right: 170px;"><img src="icon-toolbox.png" alt=""></span>
+      <span class="skill-icon" style="bottom: 80px; left: 170px;"><img src="icon-gemini.svg" alt="" style="transform: scale(1.44);"></span>
+      <span class="skill-icon" style="bottom: 0; left: 20px;"><img src="icon-agents.svg" alt=""></span>
+    </div>
+
+    <h1 class="story-title" style="font-size: 88px; line-height: 1.1;">סקיל = סט הוראות חוזרות</h1>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">13 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 13: מתי יוצרים סקיל? -->
+<!-- ============================================== -->
+<section class="slide centered">
+  <div class="story-wrap" style="max-width: 1400px;">
+    <h1 class="story-title" style="margin-bottom: 48px;">מתי יוצרים סקיל?</h1>
+
+    <div class="when-grid">
+      <!-- Proactive (right column - appears first) -->
+      <div class="when-col">
+        <div class="when-header" data-reveal>
+          <div class="when-tag">באופן יזום</div>
+          <h2 class="when-title">כשמשימה חוזרת על עצמה</h2>
+          <hr class="when-divider">
+        </div>
+        <ul class="when-list">
+          <li data-reveal>לכתוב קופי ל-X</li>
+          <li data-reveal>לנתח מיילים של חשבוניות</li>
+          <li data-reveal>להשוות מחירים</li>
+          <li data-reveal>לנתח מניות</li>
+          <li data-reveal>לכתוב דף מכירה</li>
+        </ul>
+      </div>
+
+      <!-- Retroactive (left column) -->
+      <div class="when-col">
+        <div class="when-header" data-reveal>
+          <div class="when-tag">רטרואקטיבית</div>
+          <h2 class="when-title">כשתוצאה עבדה טוב ורוצים לשחזר</h2>
+          <hr class="when-divider">
+        </div>
+        <ul class="when-list">
+          <li data-reveal>דייקנו את ה-AI לעצב באנר, ונרצה לשמור את השפה העיצובית</li>
+          <li data-reveal>ביקשנו שינתח נתונים ואהבנו את המבנה של קלוד</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">14 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 11: איך יוצרים סקיל? -->
+<!-- ============================================== -->
+<section class="slide centered" style="padding: 40px 80px 100px;">
+  <div class="story-wrap" style="max-width: 1100px;">
+    <h1 class="slide-label" style="margin-bottom: 20px;">איך יוצרים סקיל?</h1>
+
+    <div class="chat" style="margin-top: 0;">
+      <div class="msg-row user">
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          קלודי, אני רוצה ליצור סקיל שיעשה [פעולה סיזיפית שחוזרת על עצמה]. אלה ההוראות.
+        </div>
+      </div>
+
+      <div class="msg-row claude" data-reveal>
+        <img src="claude-logo.svg" alt="קלוד" class="avatar">
+        <div class="msg msg-claude">
+          יצרתי את המסמך הזה
+        </div>
+      </div>
+
+      <div class="msg-row user" data-reveal>
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          תשנה פה, תוריד שם
+        </div>
+      </div>
+
+      <div class="msg-row claude" data-reveal>
+        <img src="claude-logo.svg" alt="קלוד" class="avatar">
+        <div class="msg msg-claude">
+          תיקנתי, בואי תבדקי
+        </div>
+      </div>
+
+      <div class="msg-row user" data-reveal>
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          בודקת...
+        </div>
+      </div>
+
+      <div class="msg-row claude" data-reveal>
+        <img src="claude-logo.svg" alt="קלוד" class="avatar">
+        <div class="msg msg-claude">
+          לשמור?
+        </div>
+      </div>
+
+      <div class="msg-row user" data-reveal>
+        <img src="hani-avatar.png" alt="חני" class="avatar">
+        <div class="msg msg-user">
+          כן, תשמור את זה
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">15 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 15: תיקיית סקיל בסגנון file tree -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="max-width: 700px; text-align: center; position: relative;">
+    <!-- File tree positioned above title (title stays centered) -->
+    <div class="filetree" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 48px; max-width: 520px; font-size: 22px; line-height: 1.9; padding: 28px 36px; white-space: nowrap;">
+<svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 22px; height: 22px; vertical-align: middle; margin-right: 8px; color: var(--accent);"><path d="M2 5a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5z"/></svg><span class="dir">subject-line-generator/</span><br>
+└── <span class="file">SKILL.md</span><br>
+    </div>
+
+    <h1 class="story-title" style="margin: 0; font-size: 56px;">אבל הכי טוב שלא צריך לקרוא לסקיל<span class="reveal-line" data-reveal>הוא יבוא לבד</span></h1>
+    <p class="story-sub" data-reveal style="margin-top: 24px; margin-bottom: 0;">קלוד מבין מההקשר באיזה סקיל להשתמש</p>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">16 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 16: בואו נדגים בלייב -->
+<!-- ============================================== -->
+<section class="slide" style="background: #0A1237;">
+  <div class="final" style="flex: 1;">
+    <div class="live-demo-wrap">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+      <h1 style="color: #fff; font-size: 96px; font-weight: 700; margin: 0; letter-spacing: -0.025em; line-height: 1.1;">בואו נדגים בלייב</h1>
+    </div>
+  </div>
+
+  <div class="slide-footer" style="background: rgba(255,255,255,0.05);">
+    <span class="brand" style="color: rgba(255,255,255,0.7);">UXTRA · חני בוסקילה</span>
+    <span class="page" style="color: rgba(255,255,255,0.5);">17 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 17: MCP -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center; position: relative;">
+    <p class="story-sub" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 24px; white-space: nowrap;">
+      הגשר של קלוד קוד למוצרים אחרים = connectors
+    </p>
+    <h1 class="story-title" style="font-size: 220px; font-weight: 700; margin: 0; letter-spacing: -0.04em; line-height: 1;">MCP</h1>
+    <p style="margin: 8px 0 0 0; font-size: 16px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; direction: ltr;">Model Context Protocol</p>
+  </div>
+
+  <!-- Bridge construction outline at bottom of slide -->
+  <svg class="bridge-svg" viewBox="0 0 1920 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Top deck line -->
+    <line x1="0" y1="20" x2="1920" y2="20" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <!-- Bottom line -->
+    <line x1="0" y1="80" x2="1920" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <!-- Warren truss diagonal zigzag -->
+    <polyline points="0,80 120,20 240,80 360,20 480,80 600,20 720,80 840,20 960,80 1080,20 1200,80 1320,20 1440,80 1560,20 1680,80 1800,20 1920,80" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Vertical supports -->
+    <line x1="240" y1="20" x2="240" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="480" y1="20" x2="480" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="720" y1="20" x2="720" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="960" y1="20" x2="960" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1200" y1="20" x2="1200" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1440" y1="20" x2="1440" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1680" y1="20" x2="1680" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Logos landing on the bridge -->
+  <div class="mcp-logos">
+    <!-- Claude: left of MCP, falls from upper-left -->
+    <div class="mcp-logo mcp-logo-claude">
+      <img src="claude-logo.svg" alt="Claude" style="width:52px;height:52px;display:block;"/>
+    </div>
+    <!-- Pile of 7 logos: all fly in from top-right, land stacked right of MCP -->
+    <div class="mcp-logo mcp-logo-pile" style="--i:0; --px:260px; --rot:-3deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="6" y="19.5" width="17" height="7" rx="3.5" fill="#36C5F0"/><circle cx="9.5" cy="23" r="3.5" fill="#36C5F0"/><rect x="29" y="6" width="7" height="17" rx="3.5" fill="#2EB67D"/><circle cx="32.5" cy="9.5" r="3.5" fill="#2EB67D"/><rect x="29" y="25.5" width="17" height="7" rx="3.5" fill="#ECB22E"/><circle cx="42.5" cy="29" r="3.5" fill="#ECB22E"/><rect x="16" y="29" width="7" height="17" rx="3.5" fill="#E01E5A"/><circle cx="19.5" cy="42.5" r="3.5" fill="#E01E5A"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:1; --px:318px; --rot:2deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#000"/><path d="M15 38V14h7l15 19.5V14h7v24h-7L22 18.5V38z" fill="white"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:2; --px:376px; --rot:-2deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#24292e"/><path fill-rule="evenodd" clip-rule="evenodd" d="M26 7C15.51 7 7 15.51 7 26c0 8.42 5.46 15.57 13.03 18.1.95.17 1.3-.41 1.3-.92v-3.22c-5.29 1.15-6.4-2.55-6.4-2.55-.87-2.2-2.12-2.79-2.12-2.79-1.73-1.18.13-1.16.13-1.16 1.91.13 2.91 1.96 2.91 1.96 1.7 2.91 4.46 2.07 5.55 1.58.17-1.23.66-2.07 1.21-2.55C17.27 34 12.62 32.3 12.62 25c0-2.08.74-3.78 1.96-5.11-.2-.48-.85-2.42.18-5.04 0 0 1.6-.51 5.23 1.95 1.52-.42 3.15-.63 4.77-.64 1.62.01 3.25.22 4.77.64 3.63-2.46 5.23-1.95 5.23-1.95 1.03 2.62.38 4.56.18 5.04 1.22 1.33 1.96 3.03 1.96 5.11 0 7.31-4.66 8.92-9.1 9.39.71.62 1.35 1.83 1.35 3.69v5.47c0 .53.34 1.14 1.35.95C39.54 41.57 45 34.42 45 26c0-10.49-8.51-19-19-19z" fill="white"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:3; --px:434px; --rot:4deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="7" y="13" width="38" height="26" rx="3" fill="white" stroke="#E0E0E0" stroke-width="1.5"/><path d="M7 16l19 13 19-13" fill="none" stroke="#EA4335" stroke-width="2.5" stroke-linejoin="round"/><line x1="7" y1="16" x2="7" y2="39" stroke="#4285F4" stroke-width="3.5"/><line x1="45" y1="16" x2="45" y2="39" stroke="#34A853" stroke-width="3.5"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:4; --px:492px; --rot:-1deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#1e1e1e"/><rect x="14" y="8" width="12" height="12" rx="6" fill="#F24E1E"/><rect x="26" y="8" width="12" height="12" rx="6" fill="#FF7262"/><rect x="14" y="20" width="12" height="12" rx="6" fill="#A259FF"/><rect x="14" y="32" width="12" height="12" rx="6" fill="#0ACF83"/><circle cx="32" cy="26" r="7" fill="#1ABCFE"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:5; --px:550px; --rot:3deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#25D366"/><path d="M26 10C17.16 10 10 17.16 10 26c0 3.06.82 5.93 2.24 8.41L10.5 41.5l7.25-1.7A15.95 15.95 0 0026 42c8.84 0 16-7.16 16-16S34.84 10 26 10z" fill="white"/><path d="M34.5 29.5c-.4-.2-2.3-1.14-2.66-1.26-.36-.12-.62-.18-.88.2-.26.38-1.02 1.26-1.24 1.52-.22.26-.46.28-.86.1-.4-.2-1.68-.62-3.2-1.98-1.18-1.06-1.98-2.36-2.22-2.76-.24-.4 0-.6.18-.8.16-.18.4-.46.6-.68.2-.22.26-.4.4-.66.14-.26.06-.5-.04-.7-.1-.2-.88-2.14-1.2-2.92-.32-.78-.64-.68-.88-.68-.24 0-.5 0-.76 0-.26 0-.7.1-1.06.5-.36.4-1.38 1.34-1.38 3.26s1.4 3.78 1.6 4.04c.2.26 2.76 4.2 6.7 5.9.4.17.72.27.96.34.4.14.78.12 1.06.07.32-.06 2.3-.94 2.62-1.84.32-.9.32-1.68.22-1.84-.1-.16-.36-.26-.76-.46z" fill="#25D366"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:6; --px:608px; --rot:-4deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="6" y="10" width="40" height="36" rx="5" fill="white" stroke="#E0E0E0" stroke-width="1.5"/><rect x="6" y="10" width="40" height="14" rx="5" fill="#4285F4"/><rect x="6" y="18" width="40" height="6" fill="#4285F4"/><circle cx="17" cy="11" r="3" fill="white"/><circle cx="35" cy="11" r="3" fill="white"/><text x="26" y="38" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#4285F4" text-anchor="middle">24</text></svg>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">18 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 18: API -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center; position: relative;">
+    <p class="story-sub" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 24px; white-space: nowrap;">
+      המפתח לפונקציות ספציפיות במוצרים אחרים
+    </p>
+    <h1 class="story-title" style="font-size: 220px; font-weight: 700; margin: 0; letter-spacing: -0.04em; line-height: 1;">API</h1>
+    <p style="margin: 8px 0 0 0; font-size: 16px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; direction: ltr;">Application Programming Interface</p>
+  </div>
+
+  <!-- API Key tag on the road edge -->
+  <span class="orange-tag" data-reveal style="--rot: -4deg; position: absolute; top: calc(50% + 270px); left: 50%; transform: translateX(-50%) rotate(var(--rot)); display: inline-flex; align-items: center; gap: 10px; direction: ltr; z-index: 10;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M13 10l6.5-6.5"/><path d="M19.5 3.5l2 2"/><path d="M21.5 5.5l-2 2"/></svg>
+    API Key
+  </span>
+
+  <!-- Bridge -->
+  <svg class="bridge-svg" viewBox="0 0 1920 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="20" x2="1920" y2="20" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="0" y1="80" x2="1920" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <polyline points="0,80 120,20 240,80 360,20 480,80 600,20 720,80 840,20 960,80 1080,20 1200,80 1320,20 1440,80 1560,20 1680,80 1800,20 1920,80" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="240" y1="20" x2="240" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="480" y1="20" x2="480" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="720" y1="20" x2="720" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="960" y1="20" x2="960" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1200" y1="20" x2="1200" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1440" y1="20" x2="1440" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1680" y1="20" x2="1680" y2="80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Steep road below bridge -->
+  <svg class="road-svg" viewBox="0 0 1920 500" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="820,0 1100,0 660,500 380,500" fill="#111"/>
+    <line x1="820" y1="0" x2="380" y2="500" stroke="#2a2a2a" stroke-width="3"/>
+    <line x1="1100" y1="0" x2="660" y2="500" stroke="#2a2a2a" stroke-width="3"/>
+    <line x1="960" y1="0" x2="520" y2="500" stroke="white" stroke-width="8" stroke-dasharray="60 40" stroke-linecap="round"/>
+  </svg>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">19 / 27</span>
+  </div>
+
+  <!-- Logos fall onto the road below the bridge -->
+  <div class="mcp-logos on-road">
+    <div class="mcp-logo mcp-logo-claude">
+      <img src="claude-logo.svg" alt="Claude" style="width:52px;height:52px;display:block;"/>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:0; --px:260px; --rot:-3deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="6" y="19.5" width="17" height="7" rx="3.5" fill="#36C5F0"/><circle cx="9.5" cy="23" r="3.5" fill="#36C5F0"/><rect x="29" y="6" width="7" height="17" rx="3.5" fill="#2EB67D"/><circle cx="32.5" cy="9.5" r="3.5" fill="#2EB67D"/><rect x="29" y="25.5" width="17" height="7" rx="3.5" fill="#ECB22E"/><circle cx="42.5" cy="29" r="3.5" fill="#ECB22E"/><rect x="16" y="29" width="7" height="17" rx="3.5" fill="#E01E5A"/><circle cx="19.5" cy="42.5" r="3.5" fill="#E01E5A"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:1; --px:318px; --rot:2deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#000"/><path d="M15 38V14h7l15 19.5V14h7v24h-7L22 18.5V38z" fill="white"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:2; --px:376px; --rot:-2deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#24292e"/><path fill-rule="evenodd" clip-rule="evenodd" d="M26 7C15.51 7 7 15.51 7 26c0 8.42 5.46 15.57 13.03 18.1.95.17 1.3-.41 1.3-.92v-3.22c-5.29 1.15-6.4-2.55-6.4-2.55-.87-2.2-2.12-2.79-2.12-2.79-1.73-1.18.13-1.16.13-1.16 1.91.13 2.91 1.96 2.91 1.96 1.7 2.91 4.46 2.07 5.55 1.58.17-1.23.66-2.07 1.21-2.55C17.27 34 12.62 32.3 12.62 25c0-2.08.74-3.78 1.96-5.11-.2-.48-.85-2.42.18-5.04 0 0 1.6-.51 5.23 1.95 1.52-.42 3.15-.63 4.77-.64 1.62.01 3.25.22 4.77.64 3.63-2.46 5.23-1.95 5.23-1.95 1.03 2.62.38 4.56.18 5.04 1.22 1.33 1.96 3.03 1.96 5.11 0 7.31-4.66 8.92-9.1 9.39.71.62 1.35 1.83 1.35 3.69v5.47c0 .53.34 1.14 1.35.95C39.54 41.57 45 34.42 45 26c0-10.49-8.51-19-19-19z" fill="white"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:3; --px:434px; --rot:4deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="7" y="13" width="38" height="26" rx="3" fill="white" stroke="#E0E0E0" stroke-width="1.5"/><path d="M7 16l19 13 19-13" fill="none" stroke="#EA4335" stroke-width="2.5" stroke-linejoin="round"/><line x1="7" y1="16" x2="7" y2="39" stroke="#4285F4" stroke-width="3.5"/><line x1="45" y1="16" x2="45" y2="39" stroke="#34A853" stroke-width="3.5"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:4; --px:492px; --rot:-1deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#1e1e1e"/><rect x="14" y="8" width="12" height="12" rx="6" fill="#F24E1E"/><rect x="26" y="8" width="12" height="12" rx="6" fill="#FF7262"/><rect x="14" y="20" width="12" height="12" rx="6" fill="#A259FF"/><rect x="14" y="32" width="12" height="12" rx="6" fill="#0ACF83"/><circle cx="32" cy="26" r="7" fill="#1ABCFE"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:5; --px:550px; --rot:3deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="#25D366"/><path d="M26 10C17.16 10 10 17.16 10 26c0 3.06.82 5.93 2.24 8.41L10.5 41.5l7.25-1.7A15.95 15.95 0 0026 42c8.84 0 16-7.16 16-16S34.84 10 26 10z" fill="white"/><path d="M34.5 29.5c-.4-.2-2.3-1.14-2.66-1.26-.36-.12-.62-.18-.88.2-.26.38-1.02 1.26-1.24 1.52-.22.26-.46.28-.86.1-.4-.2-1.68-.62-3.2-1.98-1.18-1.06-1.98-2.36-2.22-2.76-.24-.4 0-.6.18-.8.16-.18.4-.46.6-.68.2-.22.26-.4.4-.66.14-.26.06-.5-.04-.7-.1-.2-.88-2.14-1.2-2.92-.32-.78-.64-.68-.88-.68-.24 0-.5 0-.76 0-.26 0-.7.1-1.06.5-.36.4-1.38 1.34-1.38 3.26s1.4 3.78 1.6 4.04c.2.26 2.76 4.2 6.7 5.9.4.17.72.27.96.34.4.14.78.12 1.06.07.32-.06 2.3-.94 2.62-1.84.32-.9.32-1.68.22-1.84-.1-.16-.36-.26-.76-.46z" fill="#25D366"/></svg>
+    </div>
+    <div class="mcp-logo mcp-logo-pile" style="--i:6; --px:608px; --rot:-4deg;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="52" height="52" rx="11" fill="white"/><rect x="6" y="10" width="40" height="36" rx="5" fill="white" stroke="#E0E0E0" stroke-width="1.5"/><rect x="6" y="10" width="40" height="14" rx="5" fill="#4285F4"/><rect x="6" y="18" width="40" height="6" fill="#4285F4"/><circle cx="17" cy="11" r="3" fill="white"/><circle cx="35" cy="11" r="3" fill="white"/><text x="26" y="38" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#4285F4" text-anchor="middle">24</text></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 19: Teaser -->
+<!-- ============================================== -->
+<section class="slide centered" style="justify-content: center;">
+  <div class="story-wrap" style="text-align: center; position: relative;">
+    <h1 class="story-title" style="font-size: 68px; font-weight: 700; line-height: 1.25; max-width: 860px; margin: 0 auto;">
+      אני רציתי שיקרה קסם של ממש.<br>ללא מגע יד אדם
+    </h1>
+    <p class="story-sub" style="margin-top: 28px; font-size: 28px; color: var(--muted);">כמעט, כי אני חולת שליטה</p>
+    <div class="tease-arrow">
+      <svg width="72" height="48" viewBox="0 0 72 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M52 24H10M10 24l17-14M10 24l17 14" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">20 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 20: פלואו העבודה החדש שלי -->
+<!-- ============================================== -->
+<section class="slide centered" style="padding: 40px 80px 100px;">
+  <div class="story-wrap" style="max-width: 1300px;">
+    <img src="relax.png" alt="רגועה" style="display: block; max-height: 200px; width: auto; margin: 0 auto 16px;">
+    <h1 class="story-title" style="margin-bottom: 0;">פלואו העבודה החדש שלי</h1>
+
+    <div class="timeline">
+      <div class="timeline-progress" data-progress></div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag" style="background:#fee2e2;color:#dc2626;box-shadow:0 2px 6px rgba(220,38,38,0.12);">ידני</div>
+        <div class="timeline-dot">1</div>
+        <div class="timeline-label">כותבת פוסטים בנושן</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag" style="background:#dcfce7;color:#15803d;box-shadow:0 2px 6px rgba(21,128,61,0.12);">אוטומטי</div>
+        <div class="timeline-dot">2</div>
+        <div class="timeline-label">סוכן ממיר אותם פעם בשבוע לניוזלטר יומי</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag" style="background:#dcfce7;color:#15803d;box-shadow:0 2px 6px rgba(21,128,61,0.12);">אוטומטי*</div>
+        <div class="timeline-dot">3</div>
+        <div class="timeline-label">בוחרת תאריך ממנו יתוזמנו מיילים לכל השבוע</div>
+      </div>
+
+      <div class="timeline-step" data-reveal>
+        <div class="timeline-tag" style="background:#dcfce7;color:#15803d;box-shadow:0 2px 6px rgba(21,128,61,0.12);">אוטומטי</div>
+        <div class="timeline-dot">4</div>
+        <div class="timeline-label">סוכן מכניס את כל המיילים ל־Brevo ומתזמן אוטומטית</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">21 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 21: בואו נדגים בלייב -->
+<!-- ============================================== -->
+<section class="slide" style="background: #0A1237;">
+  <div class="final" style="flex: 1;">
+    <div class="live-demo-wrap">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+      <h1 style="color: #fff; font-size: 96px; font-weight: 700; margin: 0; letter-spacing: -0.025em; line-height: 1.1;">בואו נדגים בלייב</h1>
+    </div>
+  </div>
+
+  <div class="slide-footer" style="background: rgba(255,255,255,0.05);">
+    <span class="brand" style="color: rgba(255,255,255,0.7);">UXTRA · חני בוסקילה</span>
+    <span class="page" style="color: rgba(255,255,255,0.5);">22 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 22: הצעד הבא -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final">
+    <div style="display: inline-block; background: #fed7aa; color: #c2410c; font-size: 18px; font-weight: 600; padding: 10px 26px; border-radius: 999px; margin-bottom: 28px; font-family: 'Playpen Sans Hebrew', sans-serif; letter-spacing: 0; transform: rotate(-5deg);">מחר בבוקר</div>
+    <h1 class="final-headline">
+      בחרו משימה שאתם עושים<br>
+      <mark>3 פעמים בשבוע</mark>.<br>
+      זה הסקיל הראשון שלכם.
+    </h1>
+    <p class="final-cta">רומא לא נבנתה ביום אחד</p>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">23 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 23: תחברו כלי חיצוני -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final">
+    <div style="display: inline-block; background: #fed7aa; color: #c2410c; font-size: 18px; font-weight: 600; padding: 10px 26px; border-radius: 999px; margin-bottom: 28px; font-family: 'Playpen Sans Hebrew', sans-serif; letter-spacing: 0; transform: rotate(-5deg);">מחרתיים</div>
+    <h1 class="final-headline">
+      תחברו כלי חיצוני שתמיד רציתם<br>
+      שמישהו יגש אליו <mark>במקומכם</mark>
+    </h1>
+    <p class="final-cta">connectors</p>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">24 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 24: כשיש לכם משימה -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final">
+    <div style="display: inline-block; background: #fed7aa; color: #c2410c; font-size: 18px; font-weight: 600; padding: 10px 26px; border-radius: 999px; margin-bottom: 28px; font-family: 'Playpen Sans Hebrew', sans-serif; letter-spacing: 0; transform: rotate(-5deg);">מחר בבוקר</div>
+    <h1 class="final-headline">
+      כשיש לכם משימה<br>
+      <mark>עם כמה שלבים</mark><br>
+      תנו אותה לסוכן
+    </h1>
+    <p class="final-cta">הוא יכול להשתמש בסקילים</p>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">25 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 24: תתחילו לדבר עם קלוד -->
+<!-- ============================================== -->
+<section class="slide">
+  <div class="final">
+    <div style="display: inline-block; background: #fed7aa; color: #c2410c; font-size: 18px; font-weight: 600; padding: 10px 26px; border-radius: 999px; margin-bottom: 28px; font-family: 'Playpen Sans Hebrew', sans-serif; letter-spacing: 0; transform: rotate(-5deg);">מחרתיים</div>
+    <h1 class="final-headline">
+      תתחילו לדבר עם קלוד ולתכנן<br>
+      <mark>תהליך אחד</mark><br>
+      אוטומטי שיקל לכם על החיים
+    </h1>
+    <p class="final-cta">זהירות זה ממכר!</p>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">26 / 27</span>
+  </div>
+</section>
+
+<!-- ============================================== -->
+<!-- SLIDE 26: שאלות? -->
+<!-- ============================================== -->
+<section class="slide" style="justify-content: center; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <img src="uxtra-close.png" style="width: 480px; display: block; margin-bottom: 40px;">
+    <h1 style="font-size: 96px; font-weight: 700; margin: 0; letter-spacing: -0.025em; line-height: 1.1;">שאלות?</h1>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand">UXTRA · חני בוסקילה</span>
+    <span class="page">27 / 27</span>
+  </div>
+</section>
+
+</div>
+
+<!-- Home button (all slides) -->
+<a href="#" onclick="go(0);return false;" style="position: fixed; top: 32px; right: 48px; color: #aaa; text-decoration: none; display: flex; align-items: center; z-index: 100;">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+</a>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prev" title="הקודם (→)">→</button>
+  <button id="next" title="הבא (←)">←</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  let subStep = 0;
+
+  function getReveals(slide) {
+    return slide.querySelectorAll('[data-reveal]');
+  }
+
+  function updateReveals() {
+    const slide = slides[current];
+    const items = getReveals(slide);
+    items.forEach((item, idx) => {
+      item.classList.toggle('revealed', idx < subStep);
+    });
+    const progress = slide.querySelector('[data-progress]');
+    if (progress && items.length > 1) {
+      const totalSpan = 100 - (100 / items.length);
+      const ratio = Math.max(0, subStep - 1) / (items.length - 1);
+      progress.style.width = `${totalSpan * ratio}%`;
+    }
+  }
+
+  function go(i, step = 0) {
+    if (i < 0 || i >= slides.length) return;
+    slides[current].classList.remove('active');
+    slides[i].classList.add('active');
+    current = i;
+    subStep = step;
+    updateReveals();
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  function next() {
+    const items = getReveals(slides[current]);
+    if (subStep < items.length) {
+      subStep++;
+      updateReveals();
+    } else {
+      go(current + 1);
+    }
+  }
+
+  function prev() {
+    if (subStep > 0) {
+      subStep--;
+      updateReveals();
+    } else if (current > 0) {
+      const prevSlide = slides[current - 1];
+      const prevCount = getReveals(prevSlide).length;
+      go(current - 1, prevCount);
+    }
+  }
+
+  document.getElementById('next').onclick = next;
+  document.getElementById('prev').onclick = prev;
+
+  // Zoom popup for [data-zoomable] elements
+  const zoomOverlay = document.createElement('div');
+  zoomOverlay.className = 'zoom-overlay';
+  zoomOverlay.hidden = true;
+  document.body.appendChild(zoomOverlay);
+  let zoomedEl = null;
+
+  function closeZoom() {
+    if (zoomedEl) {
+      zoomedEl.classList.remove('zoomed');
+      zoomedEl = null;
+    }
+    zoomOverlay.hidden = true;
+  }
+
+  function openZoom(el) {
+    closeZoom();
+    el.classList.add('zoomed');
+    zoomOverlay.hidden = false;
+    zoomedEl = el;
+  }
+
+  document.querySelectorAll('[data-zoomable]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (zoomedEl === el) {
+        closeZoom();
+      } else {
+        openZoom(el);
+      }
+    });
+  });
+
+  zoomOverlay.addEventListener('click', closeZoom);
+
+  document.addEventListener('keydown', e => {
+    if (zoomedEl) {
+      if (e.key === 'Escape') { closeZoom(); }
+      return;
+    }
+    if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowRight' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+    if (e.key === 'f') document.documentElement.requestFullscreen();
+  });
+
+  // Open to hash slide if present
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const n = parseInt(hash, 10) - 1;
+    if (n >= 0 && n < slides.length) go(n);
+  }
+</script>
+
+</body>
+</html>
